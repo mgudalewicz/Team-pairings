@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
           title: Text(isCreatingAccount == true ? 'Rejestracja' : 'Logowanie')),
-      body: Center(
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -74,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
                           } else {
                             errorMessage = error.toString();
                           }
-                          print(error);
                         });
                       }
                     } else if (isCreatingAccount == false) {
