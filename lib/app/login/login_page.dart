@@ -59,6 +59,9 @@ class _LoginPageState extends State<LoginPage> {
                       if (error.toString() ==
                           '[firebase_auth/unknown] Given String is empty or null') {
                         errorMessage = 'Musisz uzupełnić pola';
+                      } else if (error.toString() ==
+                          '[firebase_auth/invalid-email] The email address is badly formatted.') {
+                        errorMessage = 'Tak nie wygląda adres e-mail';
                       } else {
                         errorMessage = error.toString();
                       }
