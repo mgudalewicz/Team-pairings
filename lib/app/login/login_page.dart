@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({
     Key? key,
   }) : super(key: key);
@@ -9,6 +9,13 @@ class LoginPage extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+var errorMessage = '';
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +32,7 @@ class LoginPage extends StatelessWidget {
                   labelText: 'E-mail',
                   hintText: 'Podaj swój e-mail',
                 ),
-                controller: emailController,
+                controller: widget.emailController,
               ),
               const SizedBox(height: 20),
               TextField(
@@ -35,20 +42,29 @@ class LoginPage extends StatelessWidget {
                   labelText: 'Hasło',
                   hintText: 'Podaj swoje hasło',
                 ),
-                controller: passwordController,
+                controller: widget.passwordController,
               ),
+              const SizedBox(height: 20),
+              Text(errorMessage),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   try {
                     await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passwordController.text,
+                      email: widget.emailController.text,
+                      password: widget.passwordController.text,
                     );
                   } catch (error) {
+                    setState(() {
+                      if (error.toString() ==
+                          '[firebase_auth/unknown] Given String is empty or null') {
+                        errorMessage = 'Musisz uzupełnić pola';
+                      } else {
+                        errorMessage = error.toString();
+                      }
+                    });
                     print(error);
                   }
-                  ;
                 },
                 child: const Text('Zaloguj się'),
               ),
