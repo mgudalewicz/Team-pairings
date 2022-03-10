@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:parowanie/app/cubit/root_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -7,7 +8,7 @@ class HomePage extends StatelessWidget {
     required this.user,
   }) : super(key: key);
 
-  final User user;
+  final user;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+                context.read<RootCubit>().signOut();
               },
               child: const Text('Wyloguj'),
             ),
