@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:parowanie/app/cubit/root_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:parowanie/app/features/home/account_page/my_account_page_content.dart';
+import 'package:parowanie/app/features/home/players_page/players_page_content.dart';
+import 'package:parowanie/app/features/home/statistic_page/statistic_page_content.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({
+  const HomePage({
     Key? key,
     required this.user,
   }) : super(key: key);
@@ -22,30 +25,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Builder(builder: (context) {
         if (currentIndex == 0) {
-          return Center(
-            child: Text('Jeden'),
-          );
+          return const PlayersPageContent();
         }
         if (currentIndex == 1) {
-          return Center(
-            child: Text('Dwa'),
-          );
+          return const StatisticsPageContent();
         }
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Jesteś zalogowany jako ${widget.user.email}'),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<RootCubit>().signOut();
-                },
-                child: const Text('Wyloguj'),
-              ),
-            ],
-          ),
-        );
+        return MyAccountPageContent(email: widget.user.email);
       }),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
