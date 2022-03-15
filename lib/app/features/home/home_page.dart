@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:parowanie/app/cubit/root_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/home/account_page/my_account_page_content.dart';
 import 'package:parowanie/app/features/home/players_page/players_page_content.dart';
 import 'package:parowanie/app/features/home/statistic_page/statistic_page_content.dart';
@@ -23,6 +21,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(currentIndex == 0
+            ? 'Gracze'
+            : currentIndex == 1
+                ? 'Statystyki'
+                : 'Konto'),
+      ),
       body: Builder(builder: (context) {
         if (currentIndex == 0) {
           return const PlayersPageContent();
