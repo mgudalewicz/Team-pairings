@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:parowanie/widgets/box_text.dart';
 
 class StatisticsPageContent extends StatelessWidget {
   const StatisticsPageContent({
@@ -27,11 +28,11 @@ class StatisticsPageContent extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(width: 90, child: Text('statystyka')),
-                    Text('Punkty'),
-                    Text('Gole zdobyte'),
-                    Text('Gole Stracone'),
+                  children: const [
+                    BoxText(text: 'Zawodnik',),
+                    BoxText(text: 'Punkty'),
+                    BoxText(text: 'Gole zdobyte'),
+                    BoxText(text: 'Gole Stracone'),
                   ],
                 ),
               ),
@@ -41,10 +42,10 @@ class StatisticsPageContent extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(document['name']),
-                      Text(document['score'].toString()),
-                      Text(document['goalsScored'].toString()),
-                      Text(document['goalsConceded'].toString()),
+                      BoxText(text: document['name']),
+                      BoxText(text: document['score'].toString()),
+                      BoxText(text: document['goalsScored'].toString()),
+                      BoxText(text: document['goalsConceded'].toString()),
                     ],
                   ),
                 ),
