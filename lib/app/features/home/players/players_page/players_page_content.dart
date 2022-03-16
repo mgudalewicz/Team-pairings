@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../widgets/box_text.dart';
-
 class PlayersPageContent extends StatefulWidget {
   PlayersPageContent({
     Key? key,
@@ -34,6 +32,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
             children: [
               for (final document in documents) ...[
                 CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity.leading,
                     activeColor: Colors.green,
                     value: value,
                     title: Text(document['name']),
