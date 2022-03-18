@@ -1,5 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
 import 'package:parowanie/widgets/box_text.dart';
 
 class StatisticsPageContent extends StatelessWidget {
@@ -9,18 +10,20 @@ class StatisticsPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection('Players').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong'));
+    return BlocProvider(
+      create: (context) => PlayersCubit()..start(),
+      child: BlocBuilder<PlayersCubit, PlayersState>(
+        builder: (context, state) {
+          if (state.errorMessage.isNotEmpty) {
+            return Center(
+                child: Text('Coś poszło nie tak: ${state.errorMessage}'));
           }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: Text("Loading"));
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
           }
 
-          final documents = snapshot.data!.docs;
+          final documents = state.documents;
 
           return ListView(
             children: [
@@ -29,7 +32,9 @@ class StatisticsPageContent extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
-                    BoxText(text: 'Zawodnik',),
+                    BoxText(
+                      text: 'Zawodnik',
+                    ),
                     BoxText(text: 'Punkty'),
                     BoxText(text: 'Gole zdobyte'),
                     BoxText(text: 'Gole Stracone'),
@@ -52,6 +57,8 @@ class StatisticsPageContent extends StatelessWidget {
               ],
             ],
           );
-        });
+        },
+      ),
+    );
   }
 }
