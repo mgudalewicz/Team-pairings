@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Builder(builder: (context) {
         if (currentIndex == 0) {
-          return PlayersPageContent();
+          return const PlayersPageContent();
         }
         if (currentIndex == 1) {
           return const StatisticsPageContent();

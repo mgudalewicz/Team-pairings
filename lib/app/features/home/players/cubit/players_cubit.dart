@@ -24,7 +24,6 @@ class PlayersCubit extends Cubit<PlayersState> {
         isLoading: true,
       ),
     );
-    await Future.delayed(const Duration(seconds: 5));
 
     _streamSubscription = FirebaseFirestore.instance
         .collection('Players')
@@ -42,7 +41,7 @@ class PlayersCubit extends Cubit<PlayersState> {
       ..onError((error) {
         emit(
           PlayersState(
-            documents: [],
+            documents: const [],
             isLoading: false,
             errorMessage: error.toString(),
           ),
