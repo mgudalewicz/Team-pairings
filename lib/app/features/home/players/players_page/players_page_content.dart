@@ -31,6 +31,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
           final documents = state.documents;
 
           return ListView(
+            
             children: [
               for (final document in documents) ...[
                 CheckboxListTile(
@@ -47,7 +48,9 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
                     }),
               ],
             ],
+            
           );
+          
         }));
   }
 }
