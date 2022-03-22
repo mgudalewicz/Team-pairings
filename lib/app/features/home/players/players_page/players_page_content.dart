@@ -31,14 +31,13 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
           final documents = state.documents;
 
           return ListView(
-            
             children: [
               for (final document in documents) ...[
                 CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,
                     activeColor: Colors.green,
-                    value: document['value'],
-                    title: Text(document['name']),
+                    value: document.value,
+                    title: Text(document.name),
                     onChanged: (newValue) {
                       setState(() {
                         FirebaseFirestore.instance
@@ -48,9 +47,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
                     }),
               ],
             ],
-            
           );
-          
         }));
   }
 }

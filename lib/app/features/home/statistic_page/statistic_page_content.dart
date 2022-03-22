@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
 import 'package:parowanie/widgets/box_text.dart';
 
+
 class StatisticsPageContent extends StatelessWidget {
   const StatisticsPageContent({
     Key? key,
@@ -47,10 +48,10 @@ class StatisticsPageContent extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      BoxText(text: document['name']),
-                      BoxText(text: document['score'].toString()),
-                      BoxText(text: document['goalsScored'].toString()),
-                      BoxText(text: document['goalsConceded'].toString()),
+                      BoxText(text: document.name),
+                      BoxText(text: document.score.toString()),
+                      BoxText(text: document.goalsScored.toString()),
+                      BoxText(text: document.goalsCoceded.toString()),
                     ],
                   ),
                 ),
