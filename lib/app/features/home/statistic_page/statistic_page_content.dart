@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
 import 'package:parowanie/widgets/box_text.dart';
 
-
 class StatisticsPageContent extends StatelessWidget {
   const StatisticsPageContent({
     Key? key,
@@ -24,7 +23,7 @@ class StatisticsPageContent extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final documents = state.documents;
+          final documents = state.items;
 
           return ListView(
             children: [

@@ -11,7 +11,7 @@ class PlayersCubit extends Cubit<PlayersState> {
   PlayersCubit()
       : super(
           const PlayersState(
-            documents: [],
+            items: [],
             errorMessage: '',
             isLoading: false,
           ),
@@ -20,7 +20,7 @@ class PlayersCubit extends Cubit<PlayersState> {
   Future<void> start() async {
     emit(
       const PlayersState(
-        documents: [],
+        items: [],
         errorMessage: '',
         isLoading: true,
       ),
@@ -30,8 +30,8 @@ class PlayersCubit extends Cubit<PlayersState> {
         .collection('Players')
         .orderBy('score', descending: true)
         .snapshots()
-        .listen((data) {
-      final itemModels = data.docs.map((doc) {
+        .listen((items) {
+      final itemModels = items.docs.map((doc) {
         return ItemsModel(
           name: doc['name'],
           goalsCoceded: doc['goalsCoceded'],
@@ -43,7 +43,7 @@ class PlayersCubit extends Cubit<PlayersState> {
       }).toList();
       emit(
         PlayersState(
-          documents: itemModels,
+          items: itemModels,
           isLoading: false,
           errorMessage: '',
         ),
@@ -52,7 +52,7 @@ class PlayersCubit extends Cubit<PlayersState> {
       ..onError((error) {
         emit(
           PlayersState(
-            documents: const [],
+            items: const [],
             isLoading: false,
             errorMessage: error.toString(),
           ),

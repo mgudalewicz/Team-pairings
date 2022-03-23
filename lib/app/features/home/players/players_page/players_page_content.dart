@@ -28,7 +28,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final documents = state.documents;
+          final documents = state.items;
 
           return ListView(
             children: [
