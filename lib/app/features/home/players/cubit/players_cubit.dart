@@ -59,6 +59,7 @@ class PlayersCubit extends Cubit<PlayersState> {
         );
       });
   }
+  
 
   @override
   Future<void> close() {

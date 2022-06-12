@@ -15,8 +15,7 @@ class StatisticsPageContent extends StatelessWidget {
       child: BlocBuilder<StatisticsCubit, StatisticsState>(
         builder: (context, state) {
           if (state.errorMessage.isNotEmpty) {
-            return Center(
-                child: Text('Coś poszło nie tak: ${state.errorMessage}'));
+            return Center(child: Text('Coś poszło nie tak: ${state.errorMessage}'));
           }
 
           if (state.isLoading) {
@@ -41,6 +40,7 @@ class StatisticsPageContent extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 10),
               for (final itemModel in itemModels) ...[
                 Padding(
                   padding: const EdgeInsets.all(10.0),

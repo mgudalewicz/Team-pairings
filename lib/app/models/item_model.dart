@@ -6,6 +6,7 @@ class ItemsModel {
   final int score;
   final bool value;
 
+
   ItemsModel({
     required this.name,
     required this.goalsCoceded,

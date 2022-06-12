@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:parowanie/app/features/home/players/players_page/players_page_content.dart';
+import 'package:parowanie/app/features/home/statistic_page/statistic_page_content.dart';
 
 class AddPage extends StatelessWidget {
   AddPage({
@@ -39,7 +42,17 @@ class AddPage extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      FirebaseFirestore.instance.collection('items').add({
+                        'name': controller.text,
+                        'goalsCoceded': 0,
+                        'goalsScored': 0,
+                        'matches': 0,
+                        'score': 0,
+                        'value': false,
+                      });
+                      Navigator.popUntil(context, (route) => false);
+                    }
                   },
                   child: const Text('Dodaj gracza'))
             ],

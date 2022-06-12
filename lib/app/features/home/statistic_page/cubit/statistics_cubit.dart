@@ -26,11 +26,8 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       ),
     );
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('items')
-        .orderBy('score', descending: true)
-        .snapshots()
-        .listen((items) {
+    _streamSubscription =
+        FirebaseFirestore.instance.collection('items').orderBy('score', descending: true).snapshots().listen((items) {
       final itemModels = items.docs.map((doc) {
         return ItemsModel(
           name: doc['name'],
@@ -49,15 +46,15 @@ class StatisticsCubit extends Cubit<StatisticsState> {
         ),
       );
     })
-      ..onError((error) {
-        emit(
-          StatisticsState(
-            items: const [],
-            isLoading: false,
-            errorMessage: error.toString(),
-          ),
-        );
-      });
+          ..onError((error) {
+            emit(
+              StatisticsState(
+                items: const [],
+                isLoading: false,
+                errorMessage: error.toString(),
+              ),
+            );
+          });
   }
 
   @override
