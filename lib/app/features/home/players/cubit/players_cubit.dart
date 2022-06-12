@@ -27,7 +27,7 @@ class PlayersCubit extends Cubit<PlayersState> {
     );
 
     _streamSubscription = FirebaseFirestore.instance
-        .collection('Players')
+        .collection('items')
         .orderBy('score', descending: true)
         .snapshots()
         .listen((items) {

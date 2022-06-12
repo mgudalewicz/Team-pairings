@@ -23,7 +23,7 @@ class StatisticsPageContent extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final documents = state.items;
+          final itemModels = state.items;
 
           return ListView(
             children: [
@@ -41,16 +41,16 @@ class StatisticsPageContent extends StatelessWidget {
                   ],
                 ),
               ),
-              for (final document in documents) ...[
+              for (final itemModel in itemModels) ...[
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      BoxText(text: document.name),
-                      BoxText(text: document.score.toString()),
-                      BoxText(text: document.goalsScored.toString()),
-                      BoxText(text: document.goalsCoceded.toString()),
+                      BoxText(text: itemModel.name),
+                      BoxText(text: itemModel.score.toString()),
+                      BoxText(text: itemModel.goalsScored.toString()),
+                      BoxText(text: itemModel.goalsCoceded.toString()),
                     ],
                   ),
                 ),

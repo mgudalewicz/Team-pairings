@@ -39,9 +39,7 @@ class AddPage extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print("coś");
-                    }
+                    if (_formKey.currentState!.validate()) {}
                   },
                   child: const Text('Dodaj gracza'))
             ],
