@@ -30,6 +30,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
         FirebaseFirestore.instance.collection('items').orderBy('score', descending: true).snapshots().listen((items) {
       final itemModels = items.docs.map((doc) {
         return ItemsModel(
+          id: doc.id,
           name: doc['name'],
           goalsCoceded: doc['goalsCoceded'],
           goalsScored: doc['goalsScored'],

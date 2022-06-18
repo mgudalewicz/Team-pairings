@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/home/add/add_page.dart';
 import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
-import 'package:parowanie/app/models/item_model.dart';
 
 class PlayersPageContent extends StatefulWidget {
   const PlayersPageContent({
@@ -32,40 +30,53 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
 
           return Column(
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => AddPage(),
-                      fullscreenDialog: true,
-                    ),
-                  );
-                },
-                child: const Text('Dodaj gracza'),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AddPage(),
+                          fullscreenDialog: true,
+                        ),
+                      );
+                    },
+                    child: const Text('Dodaj gracza'),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Losuj druzyny'),
+                  ),
+                ],
               ),
               ListView(
                 shrinkWrap: true,
                 children: [
                   for (final itemModel in itemModels) ...[
-                    Dismissible(key: ValueKey(itemModel), child: PlayersBox(itemModel)),
+                    Dismissible(
+                        key: ValueKey(itemModel.id),
+                        onDismissed: (_) {
+                          context.read<PlayersCubit>().deleted(itemModel.id);
+                        },
+                        child: CheckboxListTile(
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Colors.green,
+                            value: itemModel.value,
+                            title: Text(itemModel.name),
+                            onChanged: (newValue) {
+                              setState(() {
+                                bool value = newValue!;
+                                context.read<PlayersCubit>().chamgeValue(value, itemModel.id);
+                              });
+                            })),
                   ],
                 ],
               ),
             ],
           );
         }));
-  }
-
-  CheckboxListTile PlayersBox(ItemsModel itemModel) {
-    return CheckboxListTile(
-        controlAffinity: ListTileControlAffinity.leading,
-        activeColor: Colors.green,
-        value: itemModel.value,
-        title: Text(itemModel.name),
-        onChanged: (newValue) {
-          setState(() {
-            FirebaseFirestore.instance.collection('Players').snapshots(includeMetadataChanges: true);
-          });
-        });
   }
 }

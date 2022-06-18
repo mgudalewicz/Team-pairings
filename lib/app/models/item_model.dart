@@ -1,4 +1,5 @@
 class ItemsModel {
+  final String id;
   final String name;
   final int goalsCoceded;
   final int goalsScored;
@@ -6,8 +7,9 @@ class ItemsModel {
   final int score;
   final bool value;
 
-
-  ItemsModel({
+  ItemsModel(
+    {
+    required this.id,
     required this.name,
     required this.goalsCoceded,
     required this.goalsScored,

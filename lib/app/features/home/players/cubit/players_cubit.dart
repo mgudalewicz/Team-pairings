@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,13 +27,11 @@ class PlayersCubit extends Cubit<PlayersState> {
       ),
     );
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('items')
-        .orderBy('score', descending: true)
-        .snapshots()
-        .listen((items) {
+    _streamSubscription =
+        FirebaseFirestore.instance.collection('items').orderBy('score', descending: true).snapshots().listen((items) {
       final itemModels = items.docs.map((doc) {
         return ItemsModel(
+          id: doc.id,
           name: doc['name'],
           goalsCoceded: doc['goalsCoceded'],
           goalsScored: doc['goalsScored'],
@@ -49,17 +48,24 @@ class PlayersCubit extends Cubit<PlayersState> {
         ),
       );
     })
-      ..onError((error) {
-        emit(
-          PlayersState(
-            items: const [],
-            isLoading: false,
-            errorMessage: error.toString(),
-          ),
-        );
-      });
+          ..onError((error) {
+            emit(
+              PlayersState(
+                items: const [],
+                isLoading: false,
+                errorMessage: error.toString(),
+              ),
+            );
+          });
   }
-  
+
+  Future<void> deleted(String id) async {
+    await FirebaseFirestore.instance.collection('items').doc(id).delete();
+  }
+
+  Future<void> chamgeValue(bool value, String id) async {
+    await FirebaseFirestore.instance.collection('items').doc(id).update({'value': value});
+  }
 
   @override
   Future<void> close() {
