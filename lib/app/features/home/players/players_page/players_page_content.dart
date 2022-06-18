@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:parowanie/app/features/home/add/add_page.dart';
 import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
 import 'package:parowanie/app/models/item_model.dart';
 
@@ -29,11 +30,27 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
 
           final itemModels = state.items;
 
-          return ListView(
+          return Column(
             children: [
-              for (final itemModel in itemModels) ...[
-                Dismissible(key: ValueKey(itemModel), child: PlayersBox(itemModel)),
-              ],
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AddPage(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                },
+                child: const Text('Dodaj gracza'),
+              ),
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  for (final itemModel in itemModels) ...[
+                    Dismissible(key: ValueKey(itemModel), child: PlayersBox(itemModel)),
+                  ],
+                ],
+              ),
             ],
           );
         }));

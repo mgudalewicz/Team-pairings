@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:parowanie/app/app.dart';
 import 'package:parowanie/app/features/home/players/players_page/players_page_content.dart';
 import 'package:parowanie/app/features/home/statistic_page/statistic_page_content.dart';
 
@@ -51,7 +52,12 @@ class AddPage extends StatelessWidget {
                         'score': 0,
                         'value': false,
                       });
-                      Navigator.popUntil(context, (route) => false);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                          fullscreenDialog: true,
+                        ),
+                      );
                     }
                   },
                   child: const Text('Dodaj gracza'))

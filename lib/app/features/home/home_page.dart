@@ -4,7 +4,6 @@ import 'package:parowanie/app/features/home/add/add_page.dart';
 import 'package:parowanie/app/features/home/players/players_page/players_page_content.dart';
 import 'package:parowanie/app/features/home/statistic_page/statistic_page_content.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
@@ -39,17 +38,6 @@ class _HomePageState extends State<HomePage> {
         }
         return MyAccountPageContent(email: widget.user.email);
       }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => AddPage(),
-              fullscreenDialog: true,
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (newIndex) {
