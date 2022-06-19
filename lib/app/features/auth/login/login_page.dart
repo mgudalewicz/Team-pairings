@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/auth/login/cubit/login_cubit.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({
     Key? key,
@@ -29,18 +28,25 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(state.isCreatingAccount
-                        ? 'Zarejestruj się'
-                        : 'Zaloguj się'),
+                    Text(state.isCreatingAccount ? 'Zarejestruj się' : 'Zaloguj się'),
                     const SizedBox(height: 20),
                     TextField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'E-mail',
+                        hintText: 'Podaj E-mail',
+                      ),
                       controller: email,
-                      decoration: const InputDecoration(hintText: 'E-mail'),
                     ),
+                    const SizedBox(height: 20),
                     TextField(
-                      controller: password,
                       obscureText: true,
-                      decoration: const InputDecoration(hintText: 'Hasło'),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Hasło',
+                        hintText: 'Podaj Hasłow',
+                      ),
+                      controller: password,
                     ),
                     const SizedBox(height: 20),
                     Text(state.errorMessage),
@@ -50,9 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                         if (state.isCreatingAccount) {
                           // rejestracja
                           try {
-                            context
-                                .read<LoginCubit>()
-                                .signUp(email.text, password.text);
+                            context.read<LoginCubit>().signUp(email.text, password.text);
                           } catch (error) {
                             Center(
                               child: Text(
@@ -63,9 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                         } else {
                           // logowanie
                           try {
-                            context
-                                .read<LoginCubit>()
-                                .signIn(email.text, password.text);
+                            context.read<LoginCubit>().signIn(email.text, password.text);
                           } catch (error) {
                             Center(
                               child: Text(
@@ -75,9 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         }
                       },
-                      child: Text(state.isCreatingAccount
-                          ? 'Zarejestruj się'
-                          : 'Zaloguj się'),
+                      child: Text(state.isCreatingAccount ? 'Zarejestruj się' : 'Zaloguj się'),
                     ),
                     const SizedBox(height: 20),
                     if (state.isCreatingAccount == false) ...{

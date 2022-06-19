@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/app.dart';
@@ -47,14 +46,7 @@ class AddPage extends StatelessWidget {
                     ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            FirebaseFirestore.instance.collection('items').add({
-                              'name': controller.text,
-                              'goalsCoceded': 0,
-                              'goalsScored': 0,
-                              'matches': 0,
-                              'score': 0,
-                              'value': false,
-                            });
+                            context.read<AddCubit>().addPlayers(controller.text);
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => const MyApp(),
