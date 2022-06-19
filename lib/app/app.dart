@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:parowanie/app/cubit/root_cubit.dart';
+import 'package:parowanie/app/features/auth/login/login_page.dart';
 import 'package:parowanie/app/features/home/home_page.dart';
-import 'package:parowanie/app/features/login/login_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyApp extends StatelessWidget {
@@ -32,7 +32,7 @@ class RootPage extends StatelessWidget {
         builder: (context, state) {
           final user = state.user;
           if (user == null) {
-            return LoginPage();
+            return const LoginPage();
           }
           return HomePage(user: user);
         },
