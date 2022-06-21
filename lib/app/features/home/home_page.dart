@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parowanie/app/features/home/account_page/my_account_page_content.dart';
-import 'package:parowanie/app/features/home/add/add_page.dart';
-import 'package:parowanie/app/features/home/players/players_page/players_page_content.dart';
+import 'package:parowanie/app/features/home/players/players_page_content.dart';
 import 'package:parowanie/app/features/home/statistic_page/statistic_page_content.dart';
 
 class HomePage extends StatefulWidget {
