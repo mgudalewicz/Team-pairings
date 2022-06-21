@@ -5,8 +5,6 @@ import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
 import 'package:parowanie/app/features/teams/teams_page.dart';
 import 'package:parowanie/app/models/item_model.dart';
 
-int meters = 0;
-
 class PlayersPageContent extends StatefulWidget {
   const PlayersPageContent({
     Key? key,
@@ -18,6 +16,7 @@ class PlayersPageContent extends StatefulWidget {
 
 class _PlayersPageContentState extends State<PlayersPageContent> {
   var checkValue = false;
+  int meters = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
           }
 
           final itemModels = state.items;
-          int meter = itemModels.where((c) => c.value == true).length;
+          int meter = itemModels.where((a) => a.value == true).length;
           meters = meter;
 
           return Column(
@@ -56,12 +55,14 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
                   const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => TeamsPage(meters: meters),
-                          fullscreenDialog: true,
-                        ),
-                      );
+                      if (meters >= 3) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => TeamsPage(meters: meters),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      }
                     },
                     child: const Text('Losuj druzyny'),
                   ),
