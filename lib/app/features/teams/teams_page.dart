@@ -21,7 +21,6 @@ class _TeamsPageState extends State<TeamsPage> {
         builder: (context, state) {
           final int teams = (state.items.length / 2).floor();
           final List itemModels = state.items;
-          int z = 0;
           int i = 0;
           List players = [];
           for (i; i < teams; i++) {

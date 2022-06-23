@@ -38,7 +38,8 @@ class TeamsCubit extends Cubit<TeamsState> {
           score: doc['score'],
           value: doc['value'],
         );
-      }).toList();
+      }).toList()
+        ..shuffle();
       emit(
         TeamsState(
           items: itemModels.where((ItemsModel itemsModel) => itemsModel.value == true).toList(),
