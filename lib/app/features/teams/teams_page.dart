@@ -86,7 +86,24 @@ class _TeamsPageState extends State<TeamsPage> {
                   ],
                 ),
               ),
-              itemBuilder: (context, dynamic element) => Text(element['name']),
+              itemBuilder: (context, dynamic element) => Container(
+                padding: const EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.green,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(element['name']),
+                  ],
+                ),
+              ),
               itemComparator: (item1, item2) => item1['name'].compareTo(item2['name']), // optional
               useStickyGroupSeparators: true, // optional
               floatingHeader: true, // optional

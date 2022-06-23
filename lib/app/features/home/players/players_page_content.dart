@@ -68,7 +68,9 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
                   ),
                 ],
               ),
-              showListWithChoice(itemModels, context),
+              changeAllValue(itemModels, context),
+              const Divider(color: Colors.blue),
+              Expanded(child: showListWithChoice(itemModels, context)),
             ],
           );
         }));
@@ -78,8 +80,6 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
     return ListView(
       shrinkWrap: true,
       children: [
-        changeAllValue(itemModels, context),
-        const Divider(color: Colors.blue),
         for (final itemModel in itemModels) ...[
           Dismissible(
               key: ValueKey(itemModel.id),
