@@ -37,6 +37,9 @@ class TeamsCubit extends Cubit<TeamsState> {
           matches: doc['matches'],
           score: doc['score'],
           value: doc['value'],
+          draws: doc['draws'],
+          losts: doc['losts'],
+          wins: doc['wins'],
         );
       }).toList()
         ..shuffle();

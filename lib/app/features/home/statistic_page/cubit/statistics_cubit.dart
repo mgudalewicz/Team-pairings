@@ -37,6 +37,9 @@ class StatisticsCubit extends Cubit<StatisticsState> {
           matches: doc['matches'],
           score: doc['score'],
           value: doc['value'],
+          draws: doc['draws'],
+          losts: doc['losts'],
+          wins: doc['wins'],
         );
       }).toList();
       emit(

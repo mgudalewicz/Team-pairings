@@ -105,7 +105,6 @@ class _TeamsPageState extends State<TeamsPage> {
                 ),
               ),
               itemComparator: (item1, item2) => item1['name'].compareTo(item2['name']), // optional
-              useStickyGroupSeparators: true, // optional
               floatingHeader: true, // optional
               order: GroupedListOrder.ASC, // optional
             ),

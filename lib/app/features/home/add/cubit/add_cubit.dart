@@ -37,6 +37,9 @@ class AddCubit extends Cubit<AddState> {
           matches: doc['matches'],
           score: doc['score'],
           value: doc['value'],
+          draws: doc['draws'],
+          losts: doc['losts'],
+          wins: doc['wins'],
         );
       }).toList();
       emit(
@@ -66,6 +69,9 @@ class AddCubit extends Cubit<AddState> {
       'matches': 0,
       'score': 0,
       'value': false,
+      'draws': 0,
+      'losts': 0,
+      'wins': 0,
     });
   }
 

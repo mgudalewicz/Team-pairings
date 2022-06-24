@@ -6,6 +6,9 @@ class ItemsModel {
   final int matches;
   final int score;
   final bool value;
+  final int wins;
+  final int losts;
+  final int draws;
 
   ItemsModel(
     {
@@ -16,5 +19,8 @@ class ItemsModel {
     required this.matches,
     required this.score,
     required this.value,
+    required this.wins,
+    required this.losts,
+    required this.draws,
   });
 }
