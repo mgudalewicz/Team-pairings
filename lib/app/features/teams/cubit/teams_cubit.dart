@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 import 'package:parowanie/app/models/item_model.dart';
+import 'package:parowanie/widgets/checkbox_state.dart';
 
 part 'teams_state.dart';
 
@@ -14,6 +15,7 @@ class TeamsCubit extends Cubit<TeamsState> {
             items: [],
             errorMessage: '',
             isLoading: false,
+            checkBox: [],
           ),
         );
   StreamSubscription? _streamSubscription;
@@ -23,6 +25,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         items: [],
         errorMessage: '',
         isLoading: true,
+        checkBox: [],
       ),
     );
 
@@ -45,19 +48,21 @@ class TeamsCubit extends Cubit<TeamsState> {
         ..shuffle();
       List itemModels = itemModel.where((ItemsModel itemsModel) => itemsModel.value == true).toList();
       final int teams = (itemModels.length / 2).floor();
+      final List checkBox = [];
       int i = 0;
       List players = [];
       for (i; i < teams; i++) {
         int x = i + 1;
         int y = 2 * i;
+        checkBox.add(CheckBoxState(title: 'Drużyna $x'));
         players.add({
-          'group': 'Druzyna $x',
+          'group': 'Drużyna $x',
           'name': itemModels[y].name,
           'id': itemModels[y].id,
           'value': false,
         });
         players.add({
-          'group': 'Druzyna $x',
+          'group': 'Drużyna $x',
           'name': itemModels[y + 1].name,
           'id': itemModels[y + 1].id,
           'value': false,
@@ -66,16 +71,18 @@ class TeamsCubit extends Cubit<TeamsState> {
           int lastTeam = teams + 1;
           int lastIndex = 2 * teams;
           players.add({
-            'group': 'Druzyna $lastTeam',
+            'group': 'Drużyna $lastTeam',
             'name': itemModels[lastIndex].name,
             'id': itemModels[lastIndex].id,
             'value': false,
           });
+          checkBox.add(CheckBoxState(title: 'Drużyna $lastTeam'));
         }
       }
       emit(
         TeamsState(
           items: players,
+          checkBox: checkBox,
           isLoading: false,
           errorMessage: '',
         ),
@@ -87,6 +94,7 @@ class TeamsCubit extends Cubit<TeamsState> {
                 items: const [],
                 isLoading: false,
                 errorMessage: error.toString(),
+                checkBox: const [],
               ),
             );
           });

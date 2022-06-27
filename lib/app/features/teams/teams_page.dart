@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:parowanie/app/features/teams/cubit/teams_cubit.dart';
+import 'package:parowanie/widgets/checkbox_state.dart';
 
 class TeamsPage extends StatefulWidget {
   const TeamsPage({Key? key, required this.meters}) : super(key: key);
@@ -12,9 +13,9 @@ class TeamsPage extends StatefulWidget {
   State<TeamsPage> createState() => _TeamsPageState();
 }
 
-class _TeamsPageState extends State<TeamsPage> {
-  bool checkBoxValue = false;
+bool checked = false;
 
+class _TeamsPageState extends State<TeamsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -22,10 +23,11 @@ class _TeamsPageState extends State<TeamsPage> {
       child: BlocBuilder<TeamsCubit, TeamsState>(
         builder: (context, state) {
           final List players = state.items;
+          final List checkBox = state.checkBox;
 
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Druzyny'),
+              title: const Text('Drużyny'),
             ),
             body: Column(
               children: [
@@ -45,6 +47,24 @@ class _TeamsPageState extends State<TeamsPage> {
                               Flexible(
                                   child: Row(
                                 children: [
+                                  Checkbox(
+                                      activeColor: Colors.green,
+                                      checkColor: Colors.white,
+                                      value:
+                                          checkBox.firstWhere((element) => element.title.contains(groupByValue)).value,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          checkBox.firstWhere((element) => element.title.contains(groupByValue)).value =
+                                              newValue!;
+                                          for (final player in players) {
+                                            if (player['group'] == groupByValue) {
+                                              player['value'] = checkBox
+                                                  .firstWhere((element) => element.title.contains(groupByValue))
+                                                  .value;
+                                            }
+                                          }
+                                        });
+                                      }),
                                   Container(
                                     margin: const EdgeInsets.only(left: 8, right: 8),
                                     child: Text(
@@ -56,15 +76,6 @@ class _TeamsPageState extends State<TeamsPage> {
                                       ),
                                     ),
                                   ),
-                                  Checkbox(
-                                      activeColor: Colors.green,
-                                      checkColor: Colors.white,
-                                      value: checkBoxValue,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          checkBoxValue = newValue!;
-                                        });
-                                      }),
                                 ],
                               )),
                             ],
@@ -78,14 +89,17 @@ class _TeamsPageState extends State<TeamsPage> {
                       margin: const EdgeInsets.only(left: 20),
                       child: Row(
                         children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.green,
-                            ),
-                          ),
+                          if (element['value'] == true)
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.green),
+                            )
+                          else
+                            Container(
+                                width: 8,
+                                height: 8,
+                                decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red)),
                           const SizedBox(width: 10),
                           Text(element['name']),
                         ],
