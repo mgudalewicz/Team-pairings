@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:parowanie/app/features/teams/cubit/teams_cubit.dart';
-import 'package:parowanie/widgets/checkbox_state.dart';
+import 'package:parowanie/app/features/teams/matches.dart';
 
 class TeamsPage extends StatefulWidget {
   const TeamsPage({Key? key, required this.meters}) : super(key: key);
@@ -24,6 +24,7 @@ class _TeamsPageState extends State<TeamsPage> {
         builder: (context, state) {
           final List players = state.items;
           final List checkBox = state.checkBox;
+          int _meter = players.where((players) => players['value'] == true).length;
 
           return Scaffold(
             appBar: AppBar(
@@ -54,6 +55,7 @@ class _TeamsPageState extends State<TeamsPage> {
                                           checkBox.firstWhere((element) => element.title.contains(groupByValue)).value,
                                       onChanged: (newValue) {
                                         setState(() {
+                                          _meter = 0;
                                           checkBox.firstWhere((element) => element.title.contains(groupByValue)).value =
                                               newValue!;
                                           for (final player in players) {
@@ -110,6 +112,27 @@ class _TeamsPageState extends State<TeamsPage> {
                     order: GroupedListOrder.ASC, // optional
                   ),
                 ),
+                if (_meter == 3 || _meter == 4)
+                  SizedBox(
+                    width: 1000,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final List match = players.where((players) => players['value'] == true).toList();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Matches(players: match)),
+                        );
+                      },
+                      child: const Text('Zagraj mecz'),
+                    ),
+                  )
+                else
+                  const SizedBox(
+                    width: 1000,
+                    child: ElevatedButton(
+                      onPressed: null,
+                      child: Text('Musisz wybrać 2 drużyny'),
+                    ),
+                  )
               ],
             ),
           );
