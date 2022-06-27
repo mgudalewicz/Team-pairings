@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parowanie/app/features/home/add/add_page.dart';
+import 'package:parowanie/app/features/add/add_page.dart';
 import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
 import 'package:parowanie/app/features/teams/teams_page.dart';
 import 'package:parowanie/app/models/item_model.dart';

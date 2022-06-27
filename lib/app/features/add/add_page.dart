@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/app.dart';
-import 'package:parowanie/app/features/home/add/cubit/add_cubit.dart';
+import 'package:parowanie/app/features/add/cubit/add_cubit.dart';
 
 class AddPage extends StatelessWidget {
   AddPage({

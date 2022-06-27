@@ -13,100 +13,90 @@ class TeamsPage extends StatefulWidget {
 }
 
 class _TeamsPageState extends State<TeamsPage> {
+  bool checkBoxValue = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TeamsCubit()..start(),
       child: BlocBuilder<TeamsCubit, TeamsState>(
         builder: (context, state) {
-          final int teams = (state.items.length / 2).floor();
-          final List itemModels = state.items;
-          int i = 0;
-          List players = [];
-          for (i; i < teams; i++) {
-            int x = i + 1;
-            int y = 2 * i;
-            players.add({
-              'group': 'Druzyna $x',
-              'name': itemModels[y].name,
-              'id': itemModels[y].id,
-              'value': false,
-            });
-            players.add({
-              'group': 'Druzyna $x',
-              'name': itemModels[y + 1].name,
-              'id': itemModels[y + 1].id,
-              'value': false,
-            });
-            if (widget.meters % 2 == 1 && i == teams - 1) {
-              int lastTeam = teams + 1;
-              int lastIndex = 2 * teams;
-              players.add({
-                'group': 'Druzyna $lastTeam',
-                'name': itemModels[lastIndex].name,
-                'id': itemModels[lastIndex].id,
-                'value': false,
-              });
-            }
-          }
+          final List players = state.items;
 
           return Scaffold(
-            appBar: AppBar(),
-            body: GroupedListView<dynamic, String>(
-              elements: players,
-              groupBy: (element) => element['group'],
-              groupSeparatorBuilder: (String groupByValue) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    const Divider(color: Colors.blue),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                            child: Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(left: 8, right: 8),
-                              child: Text(
-                                groupByValue,
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                      ],
-                    ),
-                    const Divider(color: Colors.blue),
-                  ],
-                ),
-              ),
-              itemBuilder: (context, dynamic element) => Container(
-                padding: const EdgeInsets.only(bottom: 10),
-                margin: const EdgeInsets.only(left: 20),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.green,
+            appBar: AppBar(
+              title: const Text('Druzyny'),
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: GroupedListView<dynamic, String>(
+                    elements: players,
+                    groupBy: (element) => element['group'],
+                    groupSeparatorBuilder: (String groupByValue) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          const Divider(color: Colors.blue),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                  child: Row(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 8, right: 8),
+                                    child: Text(
+                                      groupByValue,
+                                      textAlign: TextAlign.start,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Checkbox(
+                                      activeColor: Colors.green,
+                                      checkColor: Colors.white,
+                                      value: checkBoxValue,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          checkBoxValue = newValue!;
+                                        });
+                                      }),
+                                ],
+                              )),
+                            ],
+                          ),
+                          const Divider(color: Colors.blue),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Text(element['name']),
-                  ],
+                    itemBuilder: (context, dynamic element) => Container(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(left: 20),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.green,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(element['name']),
+                        ],
+                      ),
+                    ),
+                    itemComparator: (item1, item2) => item1['name'].compareTo(item2['name']), // optional
+                    floatingHeader: true, // optional
+                    order: GroupedListOrder.ASC, // optional
+                  ),
                 ),
-              ),
-              itemComparator: (item1, item2) => item1['name'].compareTo(item2['name']), // optional
-              floatingHeader: true, // optional
-              order: GroupedListOrder.ASC, // optional
+              ],
             ),
           );
         },

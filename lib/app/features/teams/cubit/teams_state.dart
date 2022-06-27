@@ -8,7 +8,7 @@ class TeamsState {
     this.errorMessage = '',
   });
 
-  final List<ItemsModel> items;
+  final List<dynamic> items;
   final bool isLoading;
   final String errorMessage;
 }
