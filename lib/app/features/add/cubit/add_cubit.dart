@@ -32,7 +32,7 @@ class AddCubit extends Cubit<AddState> {
         return ItemsModel(
           id: doc.id,
           name: doc['name'],
-          goalsCoceded: doc['goalsCoceded'],
+          goalsConceded: doc['goalsConceded'],
           goalsScored: doc['goalsScored'],
           matches: doc['matches'],
           score: doc['score'],
@@ -64,7 +64,7 @@ class AddCubit extends Cubit<AddState> {
   Future<void> addPlayers(String text) async {
     await FirebaseFirestore.instance.collection('items').add({
       'name': text,
-      'goalsCoceded': 0,
+      'goalsConceded': 0,
       'goalsScored': 0,
       'matches': 0,
       'score': 0,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:parowanie/app/features/home/account_page/my_account_page_content.dart';
 import 'package:parowanie/app/features/home/players/players_page_content.dart';
@@ -9,7 +10,7 @@ class HomePage extends StatefulWidget {
     required this.user,
   }) : super(key: key);
 
-  final user;
+  final User user;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
         if (currentIndex == 1) {
           return const StatisticsPageContent();
         }
-        return MyAccountPageContent(email: widget.user.email);
+        return MyAccountPageContent(email: widget.user.email!);
       }),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

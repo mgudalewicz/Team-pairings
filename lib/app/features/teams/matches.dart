@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:parowanie/app/features/teams/teams_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:parowanie/app/features/teams/cubit/teams_cubit.dart';
 
 class Matches extends StatefulWidget {
   const Matches({Key? key, required this.players}) : super(key: key);
@@ -16,33 +17,40 @@ class _MatchesState extends State<Matches> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mecz'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          firstTeamView(),
-          SizedBox(
-              child: Column(
-            children: [
-              changeScoreFirstTeam(),
-              Container(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: const [
-                    Text('. .', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 20)
+    return BlocProvider(
+      create: (context) => TeamsCubit(),
+      child: BlocBuilder<TeamsCubit, TeamsState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Mecz'),
+            ),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                firstTeamView(),
+                SizedBox(
+                    child: Column(
+                  children: [
+                    changeScoreFirstTeam(),
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        children: const [
+                          Text('. .', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 20)
+                        ],
+                      ),
+                    ),
+                    changeScoreSecondTeam(),
                   ],
-                ),
-              ),
-              changeScoreSecondTeam(),
-            ],
-          )),
-          secondTeamView(),
-          endMatch(context)
-        ],
+                )),
+                secondTeamView(),
+                endMatch(context)
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -111,6 +119,13 @@ class _MatchesState extends State<Matches> {
       width: 1000,
       child: ElevatedButton(
         onPressed: () {
+          context.read<TeamsCubit>().endMatch(widget.players[0]['id'], _secondTeamGoals, _firstTeamGoals);
+          context.read<TeamsCubit>().endMatch(widget.players[1]['id'], _secondTeamGoals, _firstTeamGoals);
+          context.read<TeamsCubit>().endMatch(widget.players[2]['id'], _firstTeamGoals, _secondTeamGoals);
+          if (widget.players.length == 4) {
+            context.read<TeamsCubit>().endMatch(widget.players[3]['id'], _firstTeamGoals, _secondTeamGoals);
+          }
+
           Navigator.pop(context);
         },
         child: const Text('Zakończ mecz'),

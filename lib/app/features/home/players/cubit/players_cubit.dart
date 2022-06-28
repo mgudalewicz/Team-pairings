@@ -32,7 +32,7 @@ class PlayersCubit extends Cubit<PlayersState> {
         return ItemsModel(
           id: doc.id,
           name: doc['name'],
-          goalsCoceded: doc['goalsCoceded'],
+          goalsConceded: doc['goalsConceded'],
           goalsScored: doc['goalsScored'],
           matches: doc['matches'],
           score: doc['score'],

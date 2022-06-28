@@ -35,7 +35,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         return ItemsModel(
           id: doc.id,
           name: doc['name'],
-          goalsCoceded: doc['goalsCoceded'],
+          goalsConceded: doc['goalsConceded'],
           goalsScored: doc['goalsScored'],
           matches: doc['matches'],
           score: doc['score'],
@@ -98,6 +98,32 @@ class TeamsCubit extends Cubit<TeamsState> {
               ),
             );
           });
+  }
+
+  Future<void> endMatch(String id, int goalsConceded, int goalsScored) async {
+    int win = 0;
+    int lost = 0;
+    int draw = 0;
+    int score = 0;
+
+    if (goalsConceded < goalsScored) {
+      win++;
+      score += 3;
+    } else if (goalsConceded > goalsScored) {
+      lost++;
+    } else {
+      draw++;
+      score += 1;
+    }
+    await FirebaseFirestore.instance.collection('items').doc(id).update({
+      'goalsConceded': FieldValue.increment(goalsConceded),
+      'goalsScored': FieldValue.increment(goalsScored),
+      'matches': FieldValue.increment(1),
+      'wins': FieldValue.increment(win),
+      'losts': FieldValue.increment(lost),
+      'draws': FieldValue.increment(draw),
+      'score': FieldValue.increment(score),
+    });
   }
 
   @override

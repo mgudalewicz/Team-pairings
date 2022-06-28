@@ -50,7 +50,7 @@ class StatisticsPageContent extends StatelessWidget {
                       BoxText(text: itemModel.name),
                       BoxText(text: itemModel.score.toString()),
                       BoxText(text: itemModel.goalsScored.toString()),
-                      BoxText(text: itemModel.goalsCoceded.toString()),
+                      BoxText(text: itemModel.goalsConceded.toString()),
                     ],
                   ),
                 ),
