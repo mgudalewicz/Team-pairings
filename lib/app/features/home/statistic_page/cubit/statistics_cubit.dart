@@ -5,12 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 import 'package:parowanie/app/models/item_model.dart';
 
-part 'players_state.dart';
+part 'statistics_state.dart';
 
-class PlayersCubit extends Cubit<PlayersState> {
-  PlayersCubit()
+class StatisticsCubit extends Cubit<StatisticsState> {
+  StatisticsCubit()
       : super(
-          const PlayersState(
+          const StatisticsState(
             items: [],
             errorMessage: '',
             isLoading: false,
@@ -19,7 +19,7 @@ class PlayersCubit extends Cubit<PlayersState> {
   StreamSubscription? _streamSubscription;
   Future<void> start() async {
     emit(
-      const PlayersState(
+      const StatisticsState(
         items: [],
         errorMessage: '',
         isLoading: true,
@@ -27,7 +27,7 @@ class PlayersCubit extends Cubit<PlayersState> {
     );
 
     _streamSubscription =
-        FirebaseFirestore.instance.collection('items').orderBy('name', descending: false).snapshots().listen((items) {
+        FirebaseFirestore.instance.collection('items').orderBy('score', descending: true).snapshots().listen((items) {
       final itemModels = items.docs.map((doc) {
         return ItemsModel(
           id: doc.id,
@@ -43,7 +43,7 @@ class PlayersCubit extends Cubit<PlayersState> {
         );
       }).toList();
       emit(
-        PlayersState(
+        StatisticsState(
           items: itemModels,
           isLoading: false,
           errorMessage: '',
@@ -52,21 +52,13 @@ class PlayersCubit extends Cubit<PlayersState> {
     })
           ..onError((error) {
             emit(
-              PlayersState(
+              StatisticsState(
                 items: const [],
                 isLoading: false,
                 errorMessage: error.toString(),
               ),
             );
           });
-  }
-
-  Future<void> deleted(String id) async {
-    await FirebaseFirestore.instance.collection('items').doc(id).delete();
-  }
-
-  Future<void> chamgeValue(bool value, String id) async {
-    await FirebaseFirestore.instance.collection('items').doc(id).update({'value': value});
   }
 
   @override

@@ -5,12 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 import 'package:parowanie/app/models/item_model.dart';
 
-part 'players_state.dart';
+part 'add_state.dart';
 
-class PlayersCubit extends Cubit<PlayersState> {
-  PlayersCubit()
+class AddCubit extends Cubit<AddState> {
+  AddCubit()
       : super(
-          const PlayersState(
+          const AddState(
             items: [],
             errorMessage: '',
             isLoading: false,
@@ -19,7 +19,7 @@ class PlayersCubit extends Cubit<PlayersState> {
   StreamSubscription? _streamSubscription;
   Future<void> start() async {
     emit(
-      const PlayersState(
+      const AddState(
         items: [],
         errorMessage: '',
         isLoading: true,
@@ -27,7 +27,7 @@ class PlayersCubit extends Cubit<PlayersState> {
     );
 
     _streamSubscription =
-        FirebaseFirestore.instance.collection('items').orderBy('name', descending: false).snapshots().listen((items) {
+        FirebaseFirestore.instance.collection('items').orderBy('score', descending: true).snapshots().listen((items) {
       final itemModels = items.docs.map((doc) {
         return ItemsModel(
           id: doc.id,
@@ -43,7 +43,7 @@ class PlayersCubit extends Cubit<PlayersState> {
         );
       }).toList();
       emit(
-        PlayersState(
+        AddState(
           items: itemModels,
           isLoading: false,
           errorMessage: '',
@@ -52,7 +52,7 @@ class PlayersCubit extends Cubit<PlayersState> {
     })
           ..onError((error) {
             emit(
-              PlayersState(
+              AddState(
                 items: const [],
                 isLoading: false,
                 errorMessage: error.toString(),
@@ -61,12 +61,18 @@ class PlayersCubit extends Cubit<PlayersState> {
           });
   }
 
-  Future<void> deleted(String id) async {
-    await FirebaseFirestore.instance.collection('items').doc(id).delete();
-  }
-
-  Future<void> chamgeValue(bool value, String id) async {
-    await FirebaseFirestore.instance.collection('items').doc(id).update({'value': value});
+  Future<void> addPlayers(String text) async {
+    await FirebaseFirestore.instance.collection('items').add({
+      'name': text,
+      'goalsConceded': 0,
+      'goalsScored': 0,
+      'matches': 0,
+      'score': 0,
+      'value': false,
+      'draws': 0,
+      'losts': 0,
+      'wins': 0,
+    });
   }
 
   @override
