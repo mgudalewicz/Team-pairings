@@ -29,7 +29,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       ),
     );
 
-    _streamSubscription = _itemsRepository.getItemsStream().listen((items) {
+    _streamSubscription = _itemsRepository.getItemsStreamStatistic().listen((items) {
       emit(
         StatisticsState(
           items: items,

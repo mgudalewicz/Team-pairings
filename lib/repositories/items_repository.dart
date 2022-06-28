@@ -36,6 +36,39 @@ class ItemsRepository {
     );
   }
 
+  Stream<List<ItemsModel>> getItemsStreamStatistic() {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) {
+      throw Exception('User is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('items')
+        .orderBy('score', descending: true)
+        .snapshots()
+        .map(
+      (querySnapshot) {
+        return querySnapshot.docs.map(
+          (doc) {
+            return ItemsModel(
+              id: doc.id,
+              name: doc['name'],
+              goalsConceded: doc['goalsConceded'],
+              goalsScored: doc['goalsScored'],
+              matches: doc['matches'],
+              score: doc['score'],
+              value: doc['value'],
+              draws: doc['draws'],
+              losts: doc['losts'],
+              wins: doc['wins'],
+            );
+          },
+        ).toList();
+      },
+    );
+  }
+
   Future<void> deleted({required String id}) {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) {
