@@ -4,6 +4,7 @@ import 'package:parowanie/app/features/add/add_page.dart';
 import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
 import 'package:parowanie/app/features/teams/teams_page.dart';
 import 'package:parowanie/app/models/item_model.dart';
+import 'package:parowanie/repositories/items_repository.dart';
 
 class PlayersPageContent extends StatefulWidget {
   const PlayersPageContent({
@@ -21,7 +22,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => PlayersCubit()..start(),
+        create: (context) => PlayersCubit(ItemsRepository())..start(),
         child: BlocBuilder<PlayersCubit, PlayersState>(builder: (context, state) {
           if (state.errorMessage.isNotEmpty) {
             return Center(child: Text('Coś poszło nie tak: ${state.errorMessage}'));
@@ -31,6 +32,8 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
             return const Center(child: CircularProgressIndicator());
           }
 
+          final players = state.players;
+          final checkBox = state.checkBox;
           final itemModels = state.items;
           int meter = itemModels.where((a) => a.value == true).length;
           meters = meter;
@@ -57,10 +60,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
                     onPressed: () {
                       if (meters >= 3) {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => TeamsPage(meters: meters),
-                            fullscreenDialog: true,
-                          ),
+                          MaterialPageRoute(builder: (context) => TeamsPage(players: players, checkBox: checkBox)),
                         );
                       }
                     },

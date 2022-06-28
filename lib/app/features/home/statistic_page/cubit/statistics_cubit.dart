@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 import 'package:parowanie/app/models/item_model.dart';
+import 'package:parowanie/repositories/items_repository.dart';
 
 part 'statistics_state.dart';
 
 class StatisticsCubit extends Cubit<StatisticsState> {
-  StatisticsCubit()
+  StatisticsCubit(this._itemsRepository)
       : super(
           const StatisticsState(
             items: [],
@@ -16,6 +16,9 @@ class StatisticsCubit extends Cubit<StatisticsState> {
             isLoading: false,
           ),
         );
+
+  final ItemsRepository _itemsRepository;
+
   StreamSubscription? _streamSubscription;
   Future<void> start() async {
     emit(
@@ -26,39 +29,24 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       ),
     );
 
-    _streamSubscription =
-        FirebaseFirestore.instance.collection('items').orderBy('score', descending: true).snapshots().listen((items) {
-      final itemModels = items.docs.map((doc) {
-        return ItemsModel(
-          id: doc.id,
-          name: doc['name'],
-          goalsConceded: doc['goalsConceded'],
-          goalsScored: doc['goalsScored'],
-          matches: doc['matches'],
-          score: doc['score'],
-          value: doc['value'],
-          draws: doc['draws'],
-          losts: doc['losts'],
-          wins: doc['wins'],
-        );
-      }).toList();
+    _streamSubscription = _itemsRepository.getItemsStream().listen((items) {
       emit(
         StatisticsState(
-          items: itemModels,
+          items: items,
           isLoading: false,
           errorMessage: '',
         ),
       );
     })
-          ..onError((error) {
-            emit(
-              StatisticsState(
-                items: const [],
-                isLoading: false,
-                errorMessage: error.toString(),
-              ),
-            );
-          });
+      ..onError((error) {
+        emit(
+          StatisticsState(
+            items: const [],
+            isLoading: false,
+            errorMessage: error.toString(),
+          ),
+        );
+      });
   }
 
   @override

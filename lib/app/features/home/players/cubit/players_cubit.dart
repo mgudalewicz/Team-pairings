@@ -1,21 +1,28 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
+import 'package:parowanie/app/models/check_box_state.dart';
 import 'package:parowanie/app/models/item_model.dart';
+import 'package:parowanie/repositories/items_repository.dart';
 
 part 'players_state.dart';
 
 class PlayersCubit extends Cubit<PlayersState> {
-  PlayersCubit()
+  PlayersCubit(this._itemsRepository)
       : super(
           const PlayersState(
             items: [],
             errorMessage: '',
             isLoading: false,
+            players: [],
+            checkBox: [],
+
           ),
         );
+
+  final ItemsRepository _itemsRepository;
+
   StreamSubscription? _streamSubscription;
   Future<void> start() async {
     emit(
@@ -26,47 +33,76 @@ class PlayersCubit extends Cubit<PlayersState> {
       ),
     );
 
-    _streamSubscription =
-        FirebaseFirestore.instance.collection('items').orderBy('name', descending: false).snapshots().listen((items) {
-      final itemModels = items.docs.map((doc) {
-        return ItemsModel(
-          id: doc.id,
-          name: doc['name'],
-          goalsConceded: doc['goalsConceded'],
-          goalsScored: doc['goalsScored'],
-          matches: doc['matches'],
-          score: doc['score'],
-          value: doc['value'],
-          draws: doc['draws'],
-          losts: doc['losts'],
-          wins: doc['wins'],
-        );
-      }).toList();
+    _streamSubscription = _itemsRepository.getItemsStream().listen((items) {
+      List itemModels = items.where((ItemsModel itemsModel) => itemsModel.value == true).toList()..shuffle();
+      final int teams = (itemModels.length / 2).floor();
+      final List checkBox = [];
+      int i = 0;
+      List players = [];
+      for (i; i < teams; i++) {
+        int x = i + 1;
+        int y = 2 * i;
+        checkBox.add(CheckBoxState(title: 'Drużyna $x'));
+        players.add({
+          'group': 'Drużyna $x',
+          'name': itemModels[y].name,
+          'id': itemModels[y].id,
+          'value': false,
+        });
+        players.add({
+          'group': 'Drużyna $x',
+          'name': itemModels[y + 1].name,
+          'id': itemModels[y + 1].id,
+          'value': false,
+        });
+        if (itemModels.length % 2 == 1 && i == teams - 1) {
+          int lastTeam = teams + 1;
+          int lastIndex = 2 * teams;
+          players.add({
+            'group': 'Drużyna $lastTeam',
+            'name': itemModels[lastIndex].name,
+            'id': itemModels[lastIndex].id,
+            'value': false,
+          });
+          checkBox.add(CheckBoxState(title: 'Drużyna $lastTeam'));
+        }
+      }
+
       emit(
         PlayersState(
-          items: itemModels,
+          checkBox: checkBox,
+          players: players,
+          items: items,
           isLoading: false,
           errorMessage: '',
         ),
       );
     })
-          ..onError((error) {
-            emit(
-              PlayersState(
-                items: const [],
-                isLoading: false,
-                errorMessage: error.toString(),
-              ),
-            );
-          });
+      ..onError((error) {
+        emit(
+          PlayersState(
+            items: const [],
+            isLoading: false,
+            errorMessage: error.toString(),
+          ),
+        );
+      });
   }
 
   Future<void> deleted(String id) async {
-    await FirebaseFirestore.instance.collection('items').doc(id).delete();
+    try {
+      await _itemsRepository.deleted(id: id);
+    } catch (error) {
+      print(error);
+    }
   }
 
   Future<void> chamgeValue(bool value, String id) async {
-    await FirebaseFirestore.instance.collection('items').doc(id).update({'value': value});
+    try {
+      await _itemsRepository.chamgeValue(value: value, id: id);
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override

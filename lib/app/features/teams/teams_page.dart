@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:parowanie/app/features/teams/cubit/teams_cubit.dart';
 import 'package:parowanie/app/features/teams/matches.dart';
+import 'package:parowanie/repositories/items_repository.dart';
 
 class TeamsPage extends StatefulWidget {
-  const TeamsPage({Key? key, required this.meters}) : super(key: key);
+  const TeamsPage({Key? key, required this.players, required this.checkBox}) : super(key: key);
 
-  final int meters;
+  final List players;
+  final List checkBox;
 
   @override
   State<TeamsPage> createState() => _TeamsPageState();
@@ -19,11 +21,11 @@ class _TeamsPageState extends State<TeamsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TeamsCubit()..start(),
+      create: (context) => TeamsCubit(ItemsRepository()),
       child: BlocBuilder<TeamsCubit, TeamsState>(
         builder: (context, state) {
-          final List players = state.items;
-          final List checkBox = state.checkBox;
+          final List players = widget.players;
+          final List checkBox = widget.checkBox;
           int _meter = players.where((players) => players['value'] == true).length;
 
           return Scaffold(

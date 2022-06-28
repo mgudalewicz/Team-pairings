@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/home/statistic_page/cubit/statistics_cubit.dart';
+import 'package:parowanie/repositories/items_repository.dart';
 import 'package:parowanie/widgets/box_text.dart';
 
 class StatisticsPageContent extends StatelessWidget {
@@ -11,7 +12,7 @@ class StatisticsPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StatisticsCubit()..start(),
+      create: (context) => StatisticsCubit(ItemsRepository())..start(),
       child: BlocBuilder<StatisticsCubit, StatisticsState>(
         builder: (context, state) {
           if (state.errorMessage.isNotEmpty) {

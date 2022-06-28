@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/teams/cubit/teams_cubit.dart';
+import 'package:parowanie/repositories/items_repository.dart';
 
 class Matches extends StatefulWidget {
   const Matches({Key? key, required this.players}) : super(key: key);
@@ -18,7 +19,7 @@ class _MatchesState extends State<Matches> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TeamsCubit(),
+      create: (context) => TeamsCubit(ItemsRepository()),
       child: BlocBuilder<TeamsCubit, TeamsState>(
         builder: (context, state) {
           return Scaffold(
