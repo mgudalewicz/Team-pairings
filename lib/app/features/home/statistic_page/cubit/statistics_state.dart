@@ -1,8 +1,8 @@
-part of 'players_cubit.dart';
+part of 'statistics_cubit.dart';
 
 @immutable
-class PlayersState {
-  const PlayersState({
+class StatisticsState {
+  const StatisticsState({
     this.items = const [],
     this.isLoading = false,
     this.errorMessage = '',
