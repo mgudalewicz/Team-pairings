@@ -44,28 +44,41 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => AddPage(),
-                          fullscreenDialog: true,
-                        ),
-                      );
-                    },
-                    child: const Text('Dodaj gracza'),
+                  SizedBox(
+                    width: 180,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AddPage(),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                      child: const Text('Dodaj gracza'),
+                    ),
                   ),
                   const SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (meters >= 3) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => TeamsPage(players: players, checkBox: checkBox)),
-                        );
-                      }
-                    },
-                    child: const Text('Losuj druzyny'),
-                  ),
+                  if (meters >= 3)
+                    SizedBox(
+                      width: 180,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => TeamsPage(players: players, checkBox: checkBox)),
+                          );
+                        },
+                        child: const Text('Losuj drużyny'),
+                      ),
+                    ),
+                  if (meters < 3)
+                    const SizedBox(
+                      width: 180,
+                      child: ElevatedButton(
+                        onPressed: null,
+                        child: Text('Za mało zawodników'),
+                      ),
+                    ),
                 ],
               ),
               changeAllValue(itemModels, context),
