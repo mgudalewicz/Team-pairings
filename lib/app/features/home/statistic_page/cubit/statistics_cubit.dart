@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:parowanie/app/models/item_model.dart';
 import 'package:parowanie/repositories/items_repository.dart';
 
 part 'statistics_state.dart';

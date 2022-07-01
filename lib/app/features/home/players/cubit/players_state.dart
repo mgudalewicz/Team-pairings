@@ -10,7 +10,7 @@ class PlayersState {
     this.checkBox = const [],
   });
 
-  final List<ItemsModel> items;
+  final List<dynamic> items;
   final bool isLoading;
   final String errorMessage;
   final List<dynamic> players;

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:parowanie/app/models/check_box_state.dart';
-import 'package:parowanie/app/models/item_model.dart';
 import 'package:parowanie/repositories/items_repository.dart';
 
 part 'players_state.dart';
@@ -34,7 +33,7 @@ class PlayersCubit extends Cubit<PlayersState> {
     );
 
     _streamSubscription = _itemsRepository.getItemsStream().listen((items) {
-      List itemModels = items.where((ItemsModel itemsModel) => itemsModel.value == true).toList()..shuffle();
+      List itemModels = items.where((itemsModel) => itemsModel.value == true).toList()..shuffle();
       final int teams = (itemModels.length / 2).floor();
       final List checkBox = [];
       int i = 0;

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/add/add_page.dart';
 import 'package:parowanie/app/features/home/players/cubit/players_cubit.dart';
 import 'package:parowanie/app/features/teams/teams_page.dart';
-import 'package:parowanie/app/models/item_model.dart';
 import 'package:parowanie/repositories/items_repository.dart';
 
 class PlayersPageContent extends StatefulWidget {
@@ -89,7 +88,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
         }));
   }
 
-  ListView showListWithChoice(List<ItemsModel> itemModels, BuildContext context) {
+  ListView showListWithChoice(List<dynamic> itemModels, BuildContext context) {
     return ListView(
       shrinkWrap: true,
       children: [
@@ -115,7 +114,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
     );
   }
 
-  Row changeAllValue(List<ItemsModel> itemModels, BuildContext context) {
+  Row changeAllValue(List<dynamic> itemModels, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [

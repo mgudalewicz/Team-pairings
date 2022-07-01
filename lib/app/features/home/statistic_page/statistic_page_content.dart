@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/home/statistic_page/cubit/statistics_cubit.dart';
-import 'package:parowanie/app/models/item_model.dart';
 import 'package:parowanie/repositories/items_repository.dart';
 import 'package:parowanie/widgets/box_text.dart';
 
@@ -61,7 +60,7 @@ class StatisticsPageContent extends StatelessWidget {
     );
   }
 
-  Expanded _statistics(List<ItemsModel> itemModels) {
+  Expanded _statistics(List<dynamic> itemModels) {
     return Expanded(
       child: ListView(
         children: [

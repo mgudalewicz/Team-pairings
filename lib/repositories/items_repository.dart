@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:parowanie/app/models/item_model.dart';
+import 'package:parowanie/app/models/items_model.dart';
 
 class ItemsRepository {
   Stream<List<ItemsModel>> getItemsStream() {
@@ -21,8 +21,8 @@ class ItemsRepository {
             return ItemsModel(
               id: doc.id,
               name: doc['name'],
-              goalsConceded: doc['goalsConceded'],
-              goalsScored: doc['goalsScored'],
+              goalsConceded: doc['goals_conceded'],
+              goalsScored: doc['goals_scored'],
               matches: doc['matches'],
               score: doc['score'],
               value: doc['value'],
@@ -54,8 +54,8 @@ class ItemsRepository {
             return ItemsModel(
               id: doc.id,
               name: doc['name'],
-              goalsConceded: doc['goalsConceded'],
-              goalsScored: doc['goalsScored'],
+              goalsConceded: doc['goals_conceded'],
+              goalsScored: doc['goals_scored'],
               matches: doc['matches'],
               score: doc['score'],
               value: doc['value'],
@@ -97,8 +97,8 @@ class ItemsRepository {
     }
     return FirebaseFirestore.instance.collection('users').doc(userId).collection('items').add({
       'name': text,
-      'goalsConceded': 0,
-      'goalsScored': 0,
+      'goals_conceded': 0,
+      'goals_scored': 0,
       'matches': 0,
       'score': 0,
       'value': false,
@@ -128,8 +128,8 @@ class ItemsRepository {
       score += 1;
     }
     return FirebaseFirestore.instance.collection('users').doc(userId).collection('items').doc(id).update({
-      'goalsConceded': FieldValue.increment(goalsConceded),
-      'goalsScored': FieldValue.increment(goalsScored),
+      'goals_conceded': FieldValue.increment(goalsConceded),
+      'goals_scored': FieldValue.increment(goalsScored),
       'matches': FieldValue.increment(1),
       'wins': FieldValue.increment(win),
       'losts': FieldValue.increment(lost),
