@@ -29,7 +29,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
 
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          }
+          } 
 
           final players = state.players;
           final checkBox = state.checkBox;

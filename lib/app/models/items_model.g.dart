@@ -6,29 +6,30 @@ part of 'items_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ItemsModel _$ItemsModelFromJson(Map<String, dynamic> json) => ItemsModel(
+_$_ItemsModel _$$_ItemsModelFromJson(Map<String, dynamic> json) =>
+    _$_ItemsModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      goalsConceded: json['goals_conceded'] as int,
-      goalsScored: json['goals_scored'] as int,
+      goalsConceded: json['goalsConceded'] as int,
+      goalsScored: json['goalsScored'] as int,
       matches: json['matches'] as int,
       score: json['score'] as int,
       value: json['value'] as bool,
       wins: json['wins'] as int,
-      losts: json['lost'] as int,
+      losts: json['losts'] as int,
       draws: json['draws'] as int,
     );
 
-Map<String, dynamic> _$ItemsModelToJson(ItemsModel instance) =>
+Map<String, dynamic> _$$_ItemsModelToJson(_$_ItemsModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'goals_conceded': instance.goalsConceded,
-      'goals_scored': instance.goalsScored,
+      'goalsConceded': instance.goalsConceded,
+      'goalsScored': instance.goalsScored,
       'matches': instance.matches,
       'score': instance.score,
       'value': instance.value,
       'wins': instance.wins,
-      'lost': instance.losts,
+      'losts': instance.losts,
       'draws': instance.draws,
     };
