@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:parowanie/app/models/check_box_state.dart';
+import 'package:parowanie/widgets/check_box_state.dart';
 import 'package:parowanie/repositories/items_repository.dart';
 
 part 'players_state.dart';
