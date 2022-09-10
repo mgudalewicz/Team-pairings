@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:parowanie/models/items_model.dart';
+import 'package:parowanie/models/player/player.dart';
 
 class ItemsRepository {
-  Stream<List<ItemsModel>> getItemsStream() {
+  Stream<List<Player>> getItemsStream() {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) {
       throw Exception('User is not logged in');
@@ -18,7 +18,7 @@ class ItemsRepository {
       (querySnapshot) {
         return querySnapshot.docs.map(
           (doc) {
-            return ItemsModel(
+            return Player(
               id: doc.id,
               name: doc['name'],
               goalsConceded: doc['goals_conceded'],
@@ -36,7 +36,7 @@ class ItemsRepository {
     );
   }
 
-  Stream<List<ItemsModel>> getItemsStreamStatistic() {
+  Stream<List<Player>> getItemsStreamStatistic() {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) {
       throw Exception('User is not logged in');
@@ -51,7 +51,7 @@ class ItemsRepository {
       (querySnapshot) {
         return querySnapshot.docs.map(
           (doc) {
-            return ItemsModel(
+            return Player(
               id: doc.id,
               name: doc['name'],
               goalsConceded: doc['goals_conceded'],

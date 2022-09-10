@@ -1,4 +1,4 @@
-class ItemFields {
+class PlayersFields {
   /// Type [String]
   static const String id = 'id';
 
