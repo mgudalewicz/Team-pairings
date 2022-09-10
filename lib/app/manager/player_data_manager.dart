@@ -1,14 +1,13 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:parowanie/firebase/data_providers/players_data_provider.dart';
-import 'package:parowanie/models/player/player.dart';
 import 'package:parowanie/models/player/player_write_request.dart';
 import 'package:parowanie/support_files/app_locator.dart';
 
 class PlayersDataManager {
   final PlayersDataProvider _playersDataProvider = al();
 
-  Stream<List<Player>> getPlayers(String userId) {
-    return _playersDataProvider.getItemsStream(userId);
+  Future<void> getPlayers(String userId) async {
+    _playersDataProvider.getItemsStream(userId);
   }
 
   Future<void> create(
@@ -20,6 +19,7 @@ class PlayersDataManager {
         playerWriteRequest: playerWriteRequest,
         userId: userId,
       );
+      await fetch(userId);
     } catch (e) {
       Fluttertoast.showToast(msg: 'Coś poszło nie tak');
     }
@@ -36,12 +36,13 @@ class PlayersDataManager {
         playerWriteRequest: playerWriteRequest,
         userId: userId,
       );
+      await fetch(userId);
     } catch (e) {
       Fluttertoast.showToast(msg: 'Coś poszło nie tak');
     }
   }
 
-  Future<Map<String, Player>> fetch(String userId) {
-    return _playersDataProvider.fetchWithUserId(userId);
+  Future<void> fetch(String userId) async {
+    _playersDataProvider.fetchWithUserId(userId);
   }
 }
