@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/home/statistic_page/cubit/statistics_cubit.dart';
 import 'package:parowanie/repositories/items_repository.dart';
-import 'package:parowanie/widgets/box_text.dart';
+import 'package:parowanie/support_files/widgets/box_text.dart';
 
 class StatisticsPageContent extends StatelessWidget {
   const StatisticsPageContent({

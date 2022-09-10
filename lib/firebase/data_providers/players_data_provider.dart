@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:parowanie/app/app_locator.dart';
+import 'package:parowanie/support_files/app_locator.dart';
 import 'package:parowanie/models/player/player.dart';
 import 'package:parowanie/models/player/player_write_request.dart';
 
