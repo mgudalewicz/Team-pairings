@@ -6,7 +6,7 @@ import 'package:parowanie/models/player/player_write_request.dart';
 class PlayersDataProvider {
   final FirebaseFirestore _firebaseFirestore = al();
 
-  Future<Map<String, Player>> getWithUserId(String userId) async {
+  Future<Map<String, Player>> fetchWithUserId(String userId) async {
     final QuerySnapshot<Map<String, dynamic>> result =
         await _firebaseFirestore.collection('users').doc(userId).collection('items').get();
 
@@ -18,6 +18,18 @@ class PlayersDataProvider {
     }
 
     return players;
+  }
+
+  Stream<List<Player>> getItemsStream(String userId) {
+    return _firebaseFirestore.collection('users').doc(userId).collection('items').snapshots().map(
+      (querySnapshot) {
+        return querySnapshot.docs.map(
+          (doc) {
+            return Player.fromJson(doc.data()..['id'] = doc.id);
+          },
+        ).toList();
+      },
+    );
   }
 
   Future<void> create({
