@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:parowanie/manager/players_data_manager.dart';
 import 'package:parowanie/models/player/player.dart';
-import 'package:parowanie/models/player/player_write_request.dart';
 import 'package:parowanie/service_locator.dart';
 import 'package:parowanie/support_files/widgets/checkbox_state.dart';
 
@@ -22,7 +21,6 @@ class TeamsCubit extends Cubit<TeamsState> {
     await _playersDataManager.fetch();
     _subscription = _playersDataManager.getPlayers().listen((List<Player> playersList) {
       List<Player> players = playersList.where((player) => player.value == true).toList()..shuffle();
-      ;
       final int teams = (players.length / 2).floor();
       final List checkBox = [];
       int i = 0;

@@ -73,7 +73,7 @@ class _PlayersPageContentState extends State<PlayersPageContent> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => TeamsPage()),
+                  MaterialPageRoute(builder: (context) => const TeamsPage()),
                 );
               },
               child: const Text('Losuj drużyny'),

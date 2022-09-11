@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/app.dart';
 import 'package:parowanie/app/features/add/cubit/add_cubit.dart';
-import 'package:parowanie/repositories/items_repository.dart';
 
 class AddPage extends StatelessWidget {
   AddPage({
@@ -15,7 +14,7 @@ class AddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => AddCubit(ItemsRepository()),
+        create: (context) => AddCubit(),
         child: BlocBuilder<AddCubit, AddState>(builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
@@ -47,7 +46,7 @@ class AddPage extends StatelessWidget {
                     ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            context.read<AddCubit>().addPlayers(controller.text);
+                            context.read<AddCubit>().create(controller.text);
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => const MyApp(),

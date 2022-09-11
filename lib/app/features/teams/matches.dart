@@ -155,7 +155,7 @@ class _MatchesState extends State<Matches> {
           style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),
             padding: const EdgeInsets.all(15),
-            primary: Colors.blue, // <-- Button color
+            backgroundColor: Colors.blue, // <-- Button color
           ),
         ),
         const SizedBox(width: 50),
@@ -179,7 +179,7 @@ class _MatchesState extends State<Matches> {
           style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),
             padding: const EdgeInsets.all(15),
-            primary: Colors.blue, // <-- Button color
+            backgroundColor: Colors.blue, // <-- Button color
           ),
         ),
       ],
@@ -200,7 +200,7 @@ class _MatchesState extends State<Matches> {
           style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),
             padding: const EdgeInsets.all(15),
-            primary: Colors.blue, // <-- Button color
+            backgroundColor: Colors.blue, // <-- Button color
           ),
         ),
         const SizedBox(width: 50),
@@ -224,7 +224,7 @@ class _MatchesState extends State<Matches> {
           style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),
             padding: const EdgeInsets.all(15),
-            primary: Colors.blue, // <-- Button color
+            backgroundColor: Colors.blue, // <-- Button color
           ),
         ),
       ],
