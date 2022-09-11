@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parowanie/app/features/teams/cubit/teams_cubit.dart';
-import 'package:parowanie/repositories/items_repository.dart';
 
 class Matches extends StatefulWidget {
   const Matches({Key? key, required this.players}) : super(key: key);
@@ -19,7 +18,7 @@ class _MatchesState extends State<Matches> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TeamsCubit(ItemsRepository()),
+      create: (context) => TeamsCubit(),
       child: BlocBuilder<TeamsCubit, TeamsState>(
         builder: (context, state) {
           return Scaffold(
@@ -120,11 +119,19 @@ class _MatchesState extends State<Matches> {
       width: 1000,
       child: ElevatedButton(
         onPressed: () {
-          context.read<TeamsCubit>().endMatch(widget.players[0]['id'], _secondTeamGoals, _firstTeamGoals);
-          context.read<TeamsCubit>().endMatch(widget.players[1]['id'], _secondTeamGoals, _firstTeamGoals);
-          context.read<TeamsCubit>().endMatch(widget.players[2]['id'], _firstTeamGoals, _secondTeamGoals);
+          context
+              .read<TeamsCubit>()
+              .endMatch(id: widget.players[0]['id'], goalsScored: _firstTeamGoals, goalsConceded: _secondTeamGoals);
+          context
+              .read<TeamsCubit>()
+              .endMatch(id: widget.players[1]['id'], goalsScored: _firstTeamGoals, goalsConceded: _secondTeamGoals);
+          context
+              .read<TeamsCubit>()
+              .endMatch(id: widget.players[2]['id'], goalsScored: _secondTeamGoals, goalsConceded: _firstTeamGoals);
           if (widget.players.length == 4) {
-            context.read<TeamsCubit>().endMatch(widget.players[3]['id'], _firstTeamGoals, _secondTeamGoals);
+            context
+                .read<TeamsCubit>()
+                .endMatch(id: widget.players[3]['id'], goalsScored: _secondTeamGoals, goalsConceded: _firstTeamGoals);
           }
 
           Navigator.pop(context);

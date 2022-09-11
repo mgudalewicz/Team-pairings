@@ -67,6 +67,23 @@ class PlayersDataManager {
     }
   }
 
+  Future<void> endMatch({
+    required String id,
+    required int goalsConceded,
+    required int goalsScored,
+  }) async {
+    try {
+      await _playersDataProvider.endMatch(
+        id: id,
+        goalsConceded: goalsConceded,
+        goalsScored: goalsScored,
+      );
+      await fetch();
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Coś poszło nie tak');
+    }
+  }
+
   Future<void> fetch() async {
     _playersDataProvider.fetchWithUserId();
   }

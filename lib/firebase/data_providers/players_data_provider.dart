@@ -68,7 +68,7 @@ class PlayersDataProvider {
     required bool value,
     required String id,
   }) {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final userId = _firebaseAuth.currentUser?.uid;
     if (userId == null) {
       throw Exception('User is not logged in');
     }
@@ -78,5 +78,35 @@ class PlayersDataProvider {
         .collection('items')
         .doc(id)
         .update({'value': value});
+  }
+
+    Future<void> endMatch({required String id, required int goalsConceded, required int goalsScored}) {
+    final userId = _firebaseAuth.currentUser?.uid;
+    if (userId == null) {
+      throw Exception('User is not logged in');
+    }
+    int win = 0;
+    int lost = 0;
+    int draw = 0;
+    int score = 0;
+
+    if (goalsConceded < goalsScored) {
+      win++;
+      score += 3;
+    } else if (goalsConceded > goalsScored) {
+      lost++;
+    } else {
+      draw++;
+      score += 1;
+    }
+    return FirebaseFirestore.instance.collection('users').doc(userId).collection('items').doc(id).update({
+      'goals_conceded': FieldValue.increment(goalsConceded),
+      'goals_scored': FieldValue.increment(goalsScored),
+      'matches': FieldValue.increment(1),
+      'wins': FieldValue.increment(win),
+      'losts': FieldValue.increment(lost),
+      'draws': FieldValue.increment(draw),
+      'score': FieldValue.increment(score),
+    });
   }
 }
