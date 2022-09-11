@@ -1,112 +1,56 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:parowanie/support_files/widgets/check_box_state.dart';
-import 'package:parowanie/repositories/items_repository.dart';
+import 'package:equatable/equatable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:parowanie/manager/players_data_manager.dart';
+import 'package:parowanie/models/player/player.dart';
+import 'package:parowanie/service_locator.dart';
 
 part 'players_state.dart';
 
 class PlayersCubit extends Cubit<PlayersState> {
-  PlayersCubit(this._itemsRepository)
-      : super(
-          const PlayersState(
-            items: [],
-            errorMessage: '',
-            isLoading: false,
-            players: [],
-            checkBox: [],
+  PlayersCubit() : super(const PlayersLoadingState());
 
-          ),
-        );
+  final PlayersDataManager _playersDataManager = sl();
 
-  final ItemsRepository _itemsRepository;
+  StreamSubscription<dynamic>? _subscription;
 
-  StreamSubscription? _streamSubscription;
-  Future<void> start() async {
-    emit(
-      const PlayersState(
-        items: [],
-        errorMessage: '',
-        isLoading: true,
-      ),
-    );
-
-    _streamSubscription = _itemsRepository.getItemsStream().listen((items) {
-      List itemModels = items.where((itemsModel) => itemsModel.value == true).toList()..shuffle();
-      final int teams = (itemModels.length / 2).floor();
-      final List checkBox = [];
-      int i = 0;
-      List players = [];
-      for (i; i < teams; i++) {
-        int x = i + 1;
-        int y = 2 * i;
-        checkBox.add(CheckBoxState(title: 'Drużyna $x'));
-        players.add({
-          'group': 'Drużyna $x',
-          'name': itemModels[y].name,
-          'id': itemModels[y].id,
-          'value': false,
-        });
-        players.add({
-          'group': 'Drużyna $x',
-          'name': itemModels[y + 1].name,
-          'id': itemModels[y + 1].id,
-          'value': false,
-        });
-        if (itemModels.length % 2 == 1 && i == teams - 1) {
-          int lastTeam = teams + 1;
-          int lastIndex = 2 * teams;
-          players.add({
-            'group': 'Drużyna $lastTeam',
-            'name': itemModels[lastIndex].name,
-            'id': itemModels[lastIndex].id,
-            'value': false,
-          });
-          checkBox.add(CheckBoxState(title: 'Drużyna $lastTeam'));
-        }
+  Future<void> init() async {
+    await _playersDataManager.fetch();
+    _subscription = _playersDataManager.getPlayers().listen((List<Player> playersList) {
+      {
+        playersList.sort(((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase())));
       }
-
-      emit(
-        PlayersState(
-          checkBox: checkBox,
-          players: players,
-          items: items,
-          isLoading: false,
-          errorMessage: '',
-        ),
-      );
-    })
-      ..onError((error) {
-        emit(
-          PlayersState(
-            items: const [],
-            isLoading: false,
-            errorMessage: error.toString(),
-          ),
-        );
-      });
+      if (playersList.isEmpty) {
+        emit(const PlayersErrorState(error: 'Brak graczy'));
+        return;
+      }
+      emit(PlayersInfoState(
+        players: playersList,
+      ));
+    });
   }
 
   Future<void> deleted(String id) async {
     try {
-      await _itemsRepository.deleted(id: id);
+      await _playersDataManager.delete(id);
     } catch (error) {
-      print(error);
+      Fluttertoast.showToast(msg: 'Coś poszło nie tak');
     }
   }
 
-  Future<void> chamgeValue(bool value, String id) async {
+  Future<void> changeValue(bool value, String id) async {
     try {
-      await _itemsRepository.chamgeValue(value: value, id: id);
+      await _playersDataManager.changeValue(id, value);
     } catch (error) {
-      print(error);
+      Fluttertoast.showToast(msg: 'Coś poszło nie tak');
     }
   }
 
   @override
   Future<void> close() {
-    _streamSubscription?.cancel();
+    _subscription?.cancel();
     return super.close();
   }
 }

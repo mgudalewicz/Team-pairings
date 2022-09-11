@@ -8,7 +8,6 @@ class PlayersDataProvider {
   final FirebaseFirestore _firebaseFirestore = sl();
   final FirebaseAuth _firebaseAuth = sl();
 
-
   Future<Map<String, Player>> fetchWithUserId() async {
     User? user = _firebaseAuth.currentUser;
     final QuerySnapshot<Map<String, dynamic>> result =
@@ -40,8 +39,7 @@ class PlayersDataProvider {
   Future<void> create({
     required PlayerWriteRequest playerWriteRequest,
   }) {
-        User? user = _firebaseAuth.currentUser;
-
+    User? user = _firebaseAuth.currentUser;
     return _firebaseFirestore.collection('users').doc(user!.uid).collection('items').add(playerWriteRequest.toJson());
   }
 
@@ -56,5 +54,29 @@ class PlayersDataProvider {
         .collection('items')
         .doc(id)
         .update(playerWriteRequest.toJson());
+  }
+
+  Future<void> deleted({required String id}) {
+    final userId = _firebaseAuth.currentUser?.uid;
+    if (userId == null) {
+      throw Exception('User is not logged in');
+    }
+    return _firebaseFirestore.collection('users').doc(userId).collection('items').doc(id).delete();
+  }
+
+  Future<void> changeValue({
+    required bool value,
+    required String id,
+  }) {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) {
+      throw Exception('User is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('items')
+        .doc(id)
+        .update({'value': value});
   }
 }

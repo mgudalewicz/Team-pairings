@@ -41,7 +41,7 @@ class StatisticsPageContent extends StatelessWidget {
   }
 }
 
-Row _caption() {
+Widget _caption() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: const [
@@ -61,7 +61,7 @@ Row _caption() {
   );
 }
 
-Expanded _statistics(List<dynamic> itemModels) {
+Widget _statistics(List<dynamic> itemModels) {
   return Expanded(
     child: ListView(
       children: [

@@ -20,7 +20,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
     _subscription = _playersDataManager.getPlayers().listen((List<Player> playersList) {
       {
-        playersList.sort(((a, b) => a.score > b.score ? 1 : -1));
+        playersList.sort(((a, b) => a.score < b.score ? 1 : -1));
       }
       if (playersList.isEmpty) {
         emit(const StatisticsErrorState(error: 'Brak graczy'));

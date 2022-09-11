@@ -27,12 +27,39 @@ class PlayersDataManager {
   Future<void> update(
     String id,
     PlayerWriteRequest playerWriteRequest,
-    String userId,
   ) async {
     try {
       await _playersDataProvider.update(
         id: id,
         playerWriteRequest: playerWriteRequest,
+      );
+      await fetch();
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Coś poszło nie tak');
+    }
+  }
+
+  Future<void> delete(
+    String id,
+  ) async {
+    try {
+      await _playersDataProvider.deleted(
+        id: id,
+      );
+      await fetch();
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Coś poszło nie tak');
+    }
+  }
+
+  Future<void> changeValue(
+    String id,
+    bool value,
+  ) async {
+    try {
+      await _playersDataProvider.changeValue(
+        id: id,
+        value: value,
       );
       await fetch();
     } catch (e) {
