@@ -1,56 +1,40 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:parowanie/repositories/items_repository.dart';
+import 'package:equatable/equatable.dart';
+import 'package:parowanie/manager/players_data_manager.dart';
+import 'package:parowanie/models/player/player.dart';
+import 'package:parowanie/service_locator.dart';
 
 part 'statistics_state.dart';
 
 class StatisticsCubit extends Cubit<StatisticsState> {
-  StatisticsCubit(this._itemsRepository)
-      : super(
-          const StatisticsState(
-            items: [],
-            errorMessage: '',
-            isLoading: false,
-          ),
-        );
+  StatisticsCubit() : super(const StatisticsLoadingState());
 
-  final ItemsRepository _itemsRepository;
+  final PlayersDataManager _playersDataManager = sl();
 
-  StreamSubscription? _streamSubscription;
-  Future<void> start() async {
-    emit(
-      const StatisticsState(
-        items: [],
-        errorMessage: '',
-        isLoading: true,
-      ),
-    );
+  StreamSubscription<dynamic>? _subscription;
 
-    _streamSubscription = _itemsRepository.getItemsStreamStatistic().listen((items) {
-      emit(
-        StatisticsState(
-          items: items,
-          isLoading: false,
-          errorMessage: '',
-        ),
-      );
-    })
-      ..onError((error) {
-        emit(
-          StatisticsState(
-            items: const [],
-            isLoading: false,
-            errorMessage: error.toString(),
-          ),
-        );
-      });
+  Future<void> init() async {
+    await _playersDataManager.fetch();
+
+    _subscription = _playersDataManager.getPlayers().listen((List<Player> playersList) {
+      {
+        playersList.sort(((a, b) => a.score > b.score ? 1 : -1));
+      }
+      if (playersList.isEmpty) {
+        emit(const StatisticsErrorState(error: 'Brak graczy'));
+        return;
+      }
+      emit(StatisticsInfoState(
+        players: playersList,
+      ));
+    });
   }
 
   @override
   Future<void> close() {
-    _streamSubscription?.cancel();
+    _subscription?.cancel();
     return super.close();
   }
 }

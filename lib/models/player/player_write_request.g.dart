@@ -9,14 +9,14 @@ part of 'player_write_request.dart';
 PlayerWriteRequest _$PlayerWriteRequestFromJson(Map<String, dynamic> json) =>
     PlayerWriteRequest(
       name: json['name'] as String,
-      goalsConceded: json['goals_conceded'] as String,
-      goalsScored: json['goals_scored'] as String,
-      matches: json['matches'] as String,
-      score: json['score'] as String,
-      value: json['value'] as String,
-      wins: json['wins'] as String,
-      losts: json['lost'] as String,
-      draws: json['draws'] as String,
+      goalsConceded: json['goals_conceded'] as int,
+      goalsScored: json['goals_scored'] as int,
+      matches: json['matches'] as int,
+      score: json['score'] as int,
+      value: json['value'] as bool,
+      wins: json['wins'] as int,
+      losts: json['lost'] as int,
+      draws: json['draws'] as int,
     );
 
 Map<String, dynamic> _$PlayerWriteRequestToJson(PlayerWriteRequest instance) =>

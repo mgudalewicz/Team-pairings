@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:parowanie/support_files/app_locator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:parowanie/service_locator.dart';
 import 'package:parowanie/models/player/player.dart';
 import 'package:parowanie/models/player/player_write_request.dart';
 
 class PlayersDataProvider {
-  final FirebaseFirestore _firebaseFirestore = al();
+  final FirebaseFirestore _firebaseFirestore = sl();
+  final FirebaseAuth _firebaseAuth = sl();
 
-  Future<Map<String, Player>> fetchWithUserId(String userId) async {
+
+  Future<Map<String, Player>> fetchWithUserId() async {
+    User? user = _firebaseAuth.currentUser;
     final QuerySnapshot<Map<String, dynamic>> result =
-        await _firebaseFirestore.collection('users').doc(userId).collection('items').get();
+        await _firebaseFirestore.collection('users').doc(user!.uid).collection('items').get();
 
     final Map<String, Player> players = <String, Player>{};
 
@@ -20,8 +24,9 @@ class PlayersDataProvider {
     return players;
   }
 
-  Stream<List<Player>> getItemsStream(String userId) {
-    return _firebaseFirestore.collection('users').doc(userId).collection('items').snapshots().map(
+  Stream<List<Player>> getItemsStream() {
+    User? user = _firebaseAuth.currentUser;
+    return _firebaseFirestore.collection('users').doc(user!.uid).collection('items').snapshots().map(
       (querySnapshot) {
         return querySnapshot.docs.map(
           (doc) {
@@ -34,19 +39,20 @@ class PlayersDataProvider {
 
   Future<void> create({
     required PlayerWriteRequest playerWriteRequest,
-    required String userId,
   }) {
-    return _firebaseFirestore.collection('users').doc(userId).collection('items').add(playerWriteRequest.toJson());
+        User? user = _firebaseAuth.currentUser;
+
+    return _firebaseFirestore.collection('users').doc(user!.uid).collection('items').add(playerWriteRequest.toJson());
   }
 
   Future<void> update({
     required PlayerWriteRequest playerWriteRequest,
-    required String userId,
     required String id,
   }) {
+    User? user = _firebaseAuth.currentUser;
     return _firebaseFirestore
         .collection('users')
-        .doc(userId)
+        .doc(user!.uid)
         .collection('items')
         .doc(id)
         .update(playerWriteRequest.toJson());

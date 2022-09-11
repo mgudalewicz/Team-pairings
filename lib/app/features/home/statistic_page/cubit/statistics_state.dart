@@ -1,14 +1,39 @@
 part of 'statistics_cubit.dart';
 
-@immutable
-class StatisticsState {
-  const StatisticsState({
-    this.items = const [],
-    this.isLoading = false,
-    this.errorMessage = '',
+abstract class StatisticsState extends Equatable {
+  const StatisticsState();
+
+  @override
+  List<dynamic> get props => <dynamic>[];
+}
+
+class StatisticsLoadingState extends StatisticsState {
+  const StatisticsLoadingState();
+}
+
+class StatisticsInfoState extends StatisticsState {
+  const StatisticsInfoState({
+    required this.players,
+
+  });
+  final List<Player> players;
+
+
+  @override
+  List<dynamic> get props => <dynamic>[
+  players,
+      ];
+}
+
+class StatisticsErrorState extends StatisticsState {
+  const StatisticsErrorState({
+    required this.error,
   });
 
-  final List<dynamic> items;
-  final bool isLoading;
-  final String errorMessage;
+  final String error;
+
+  @override
+  List<dynamic> get props => <dynamic>[
+        error,
+      ];
 }

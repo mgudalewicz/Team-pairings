@@ -26,28 +26,28 @@ class PlayerWriteRequest extends Equatable {
   final String name;
 
   @JsonKey(name: PlayersFields.goalsConceded)
-  final String goalsConceded;
+  final int goalsConceded;
 
   @JsonKey(name: PlayersFields.goalsScored)
-  final String goalsScored;
+  final int goalsScored;
 
   @JsonKey(name: PlayersFields.matches)
-  final String matches;
+  final int matches;
 
   @JsonKey(name: PlayersFields.score)
-  final String score;
+  final int score;
 
   @JsonKey(name: PlayersFields.value)
-  final String value;
+  final bool value;
 
   @JsonKey(name: PlayersFields.wins)
-  final String wins;
+  final int wins;
 
   @JsonKey(name: PlayersFields.losts)
-  final String losts;
+  final int losts;
 
   @JsonKey(name: PlayersFields.draws)
-  final String draws;
+  final int draws;
 
   @override
   List<Object?> get props => <dynamic>[

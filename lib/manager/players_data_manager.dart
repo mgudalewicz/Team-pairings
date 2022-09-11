@@ -1,25 +1,24 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:parowanie/firebase/data_providers/players_data_provider.dart';
+import 'package:parowanie/models/player/player.dart';
 import 'package:parowanie/models/player/player_write_request.dart';
-import 'package:parowanie/support_files/app_locator.dart';
+import 'package:parowanie/service_locator.dart';
 
 class PlayersDataManager {
-  final PlayersDataProvider _playersDataProvider = al();
+  final PlayersDataProvider _playersDataProvider = sl();
 
-  Future<void> getPlayers(String userId) async {
-    _playersDataProvider.getItemsStream(userId);
+  Stream<List<Player>> getPlayers() {
+    return _playersDataProvider.getItemsStream();
   }
 
   Future<void> create(
     PlayerWriteRequest playerWriteRequest,
-    String userId,
   ) async {
     try {
       await _playersDataProvider.create(
         playerWriteRequest: playerWriteRequest,
-        userId: userId,
       );
-      await fetch(userId);
+      await fetch();
     } catch (e) {
       Fluttertoast.showToast(msg: 'Coś poszło nie tak');
     }
@@ -34,15 +33,14 @@ class PlayersDataManager {
       await _playersDataProvider.update(
         id: id,
         playerWriteRequest: playerWriteRequest,
-        userId: userId,
       );
-      await fetch(userId);
+      await fetch();
     } catch (e) {
       Fluttertoast.showToast(msg: 'Coś poszło nie tak');
     }
   }
 
-  Future<void> fetch(String userId) async {
-    _playersDataProvider.fetchWithUserId(userId);
+  Future<void> fetch() async {
+    _playersDataProvider.fetchWithUserId();
   }
 }
