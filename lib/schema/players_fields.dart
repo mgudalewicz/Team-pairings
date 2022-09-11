@@ -24,7 +24,7 @@ class PlayersFields {
   static const String wins = 'wins';
 
   /// Type [int]
-  static const String losts = 'lost';
+  static const String losts = 'losts';
 
   /// Type [int]
   static const String draws = 'draws';

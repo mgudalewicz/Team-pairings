@@ -15,7 +15,7 @@ PlayerWriteRequest _$PlayerWriteRequestFromJson(Map<String, dynamic> json) =>
       score: json['score'] as int,
       value: json['value'] as bool,
       wins: json['wins'] as int,
-      losts: json['lost'] as int,
+      losts: json['losts'] as int,
       draws: json['draws'] as int,
     );
 
@@ -28,6 +28,6 @@ Map<String, dynamic> _$PlayerWriteRequestToJson(PlayerWriteRequest instance) =>
       'score': instance.score,
       'value': instance.value,
       'wins': instance.wins,
-      'lost': instance.losts,
+      'losts': instance.losts,
       'draws': instance.draws,
     };
